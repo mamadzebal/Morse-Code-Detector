@@ -55,6 +55,7 @@ This folder contains the machine learning model used to classify the gestures de
 ## Diagrams
 - **scheme.png**: [View Architecture Diagram](MicroController_Auto_Run_Codes/Drawing.png)
 - **draw.png**: [View Setup Diagram](MicroController_Auto_Run_Codes/Scheme.png)
+- **Prototype.png**: [View Prototype](Prototype.jpg)
 
 ## How to Run the Project
 1. **Start the Web Server:**
