@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>Detecte Morse Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #e2e2e2;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: left;
+            overflow-x: auto;
+            max-height: 300px;
+            position: relative;
+            white-space: pre-wrap;
+            font-size: 18px;
+            height: 26px;
+        }
+        .blinking-cursor {
+            font-weight: bold;
+            font-size: 20px;
+            color: #333;
+            animation: blink 1s step-start infinite;
+            position: absolute;
+        }
+        .button {
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 20px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            pre {
+                font-size: 14px;
+            }
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Detected Morse Code</h1>
+        <pre id="output"><span class="static-cursor"></span></pre>
+        <button class="button" onclick="clearString()">Reset Morse Code</button>
+    </div>
+
+    <script>
+        // Function to fetch data from output.txt and display it
+        function fetchAndDisplayOutput() {
+            const timestamp = new Date().getTime();
+            const url = `output.txt?t=${timestamp}`;
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    // Display the fetched data in the pre element
+                    const outputElement = document.getElementById('output');
+                    outputElement.textContent = data;
+                    // Append the blinking cursor
+                    updateCursor();
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        // Function to update the cursor state
+        function updateCursor() {
+            $.get('http://192.168.137.1:5000/status', function(response) {
+                const outputElement = document.getElementById('output');
+
+                // Remove existing cursor spans
+                const existingCursors = outputElement.querySelectorAll('.blinking-cursor, .static-cursor');
+                existingCursors.forEach(cursor => cursor.remove());
+
+
+                console.log(response.sending)
+
+                // Create a new cursor span
+                const cursorSpan = document.createElement('span');
+                if (response.sending == 'True') {
+                    cursorSpan.className = 'blinking-cursor';
+                    cursorSpan.textContent = '|';
+                } 
+                // else {
+                //     cursorSpan.className = 'static-cursor';
+                //     cursorSpan.textContent = '';
+                // }
+                
+                outputElement.appendChild(cursorSpan);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.error('Error fetching status:', textStatus, errorThrown);
+            });
+        }
+
+        function clearString() {
+            $.get('http://192.168.137.1:5000/clear', function(response) {
+                console.log("output cleared!")
+            })
+        }
+
+        // Call the function when the page loads
+        window.onload = fetchAndDisplayOutput;
+        // window.onload = clearString;
+
+        // Refresh the content every 2 seconds
+        setInterval(fetchAndDisplayOutput, 2000);
+        setInterval(updateCursor, 2000);
+    </script>
+</body>
+</html>
