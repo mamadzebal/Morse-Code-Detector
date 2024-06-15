@@ -22,7 +22,7 @@ This folder contains the code for the web server which is written using Python a
     ```
 
 ### 2. MicroController_Auto_Run_Codes
-This folder contains the MicroPython code that runs on the microcontroller to detect hand gestures using various sensors and send the detected gestures to the web server.
+This folder contains the MicroPython code that runs on the microcontroller to detect hand gestures using various sensors and send the detected alphabets to the web server.
 
 #### Files:
 - **main.py**: The main script that initializes the microcontroller and runs the gesture detection.
@@ -53,8 +53,8 @@ This folder contains the machine learning model used to classify the gestures de
 - **dataset1.csv**: The dataset used to train and test the machine learning model.
 
 ## Diagrams
-- **scheme.png**: [View Architecture Diagram](file-GaE9Gjh8t3ouKyAzh4TWgM7T)
-- **draw.png**: [View Setup Diagram](file-LQPS0MT4tbsH5GGWcrLpa1LT)
+- **scheme.png**: [View Architecture Diagram](MicroController_Auto_Run_Codes/Drawing.png)
+- **draw.png**: [View Setup Diagram](MicroController_Auto_Run_Codes/Scheme.png)
 
 ## How to Run the Project
 1. **Start the Web Server:**
@@ -67,11 +67,12 @@ This folder contains the machine learning model used to classify the gestures de
     - Upload the `main.py`, `module.py`, and `myModel.py` to the microcontroller.
     - Ensure the microcontroller is connected to the necessary sensors (Accelerometer, Gyroscope, etc.).
     - Power on the microcontroller to start detecting gestures and sending data to the web server.
+    - Configure the SSID and Password in `MicroController_Auto_Run_Codes/module.py` to connect through a modem.
 3. **Run the Machine Learning Model:**
     - Open `Classifier.ipynb` in Jupyter Notebook.
-    - Ensure `dataset1.csv` is in the same directory.
-    - Run the notebook to see the gesture classification in action.
+    - Ensure `dataset1.csv` is in the same directory or create your dataset.
+    - Run the notebook to see the gesture classification in action and provide your `myModel.py`.
 
-This setup allows the system to detect hand gestures, classify them using the machine learning model, and display the results on a web page.
+This setup allows the system to detect hand gestures, classify them using the machine learning model, and display the resulted alphabets on a web page.
 
 
